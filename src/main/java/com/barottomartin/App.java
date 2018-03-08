@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -31,9 +32,6 @@ public class App extends Application {
             @Override
             public void handle(long now) {
                 robot.move(now);
-                try {
-                    robot.nearestObstacle().setFill(Color.RED);
-                } catch (NullPointerException e) { }
             }
         };
 

@@ -15,8 +15,8 @@ public class Robot {
 
     public Robot(Room room) {
         shape = new Circle(5);
-        shape.setCenterX(40);
-        shape.setCenterY(40);
+        shape.setCenterX(255);
+        shape.setCenterY(255);
         frontAngle = 0;
 
         this.room = room;
@@ -45,31 +45,38 @@ public class Robot {
     }
 
     public void move(long now){
-        setX(getX() + 1);
-        setY(getY() + 1);
+        if (nearestObstacle() < room.getCellPixelSize()) {
+            frontAngle = Math.random() * 360;
+        }
+        setX(getX() + Math.sin(Math.toRadians(frontAngle)));
+        setY(getY() + Math.cos(Math.toRadians(frontAngle)));
+
     }
 
-    public Rectangle nearestObstacle(){
+    public Line rayCast(){
         // Line long enough for any direction
         Line line = new Line(getX(), getY(), getX(), getY() + room.getHeight() * room.getWidth());
-        Point2D lineStart = new Point2D(line.getStartX(), line.getStartY());
         Rotate rotation = new Rotate();
         rotation.pivotXProperty().bind(line.startXProperty());
         rotation.pivotYProperty().bind(line.startYProperty());
-        rotation.setAngle(frontAngle + 45);
+        rotation.setAngle(frontAngle);
         line.getTransforms().add(rotation);
+        return line;
+    }
 
+    public double nearestObstacle() {
+        Line line = rayCast();
+        Point2D lineStart = new Point2D(line.getStartX(), line.getStartY());
         double minimumDistance = Double.MAX_VALUE;
-        Rectangle obstacle = null;
         for (Rectangle r: room.getCells()) {
             if (line.intersects(r.getLayoutBounds())){
+                //For regular cells this is kind of OK but not for
                 double dist = lineStart.distance(r.getX(), r.getY());
                 if (dist < minimumDistance){
                     minimumDistance = dist;
-                    obstacle = r;
                 }
             }
         }
-        return obstacle;
+        return minimumDistance;
     }
 }
