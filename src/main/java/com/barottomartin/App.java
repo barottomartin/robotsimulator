@@ -4,8 +4,6 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -32,6 +30,8 @@ public class App extends Application {
             @Override
             public void handle(long now) {
                 robot.move(now);
+                //Nice line to display history of navigation until that feature is done
+                //group.getChildren().add(robot.rayCast());
             }
         };
 

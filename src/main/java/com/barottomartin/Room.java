@@ -23,9 +23,10 @@ public class Room {
     }
 
     private void createBounds() {
+        Rectangle r;
         // Top and bottom bounds
         for (int i = 0; i < width; i++) {
-            Rectangle r = new Rectangle(i * cellPixelSize, 0,
+            r = new Rectangle(i * cellPixelSize, 0,
                     cellPixelSize, cellPixelSize);
             cells.add(r);
             r = new Rectangle(i * cellPixelSize, (height - 1) * cellPixelSize,
@@ -34,7 +35,7 @@ public class Room {
         }
         // Side bounds
         for (int i = 0; i < height; i++) {
-            Rectangle r = new Rectangle(0,i * cellPixelSize,
+            r = new Rectangle(0,i * cellPixelSize,
                     cellPixelSize, cellPixelSize);
             cells.add(r);
             r = new Rectangle((width - 1) * cellPixelSize,i * cellPixelSize,
