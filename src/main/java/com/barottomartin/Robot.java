@@ -1,6 +1,7 @@
 package com.barottomartin;
 
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -13,6 +14,7 @@ public class Robot {
 
     public Robot(Room room) {
         shape = new Circle(5);
+        shape.setFill(Color.CHOCOLATE);
         shape.setCenterX(35);
         shape.setCenterY(35);
         frontAngle = 0;

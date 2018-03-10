@@ -1,5 +1,7 @@
 package com.barottomartin;
 
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.List;
 public class Room {
 
     private List<Rectangle> cells;
+    private ImagePattern pattern;
     private int height;
     private int width;
     private int cellPixelSize;
@@ -16,8 +19,9 @@ public class Room {
         this.height = height;
         this.width = width;
         this.cellPixelSize = cellPixelSize;
-
-        cells = new ArrayList<>();
+        this.pattern = new ImagePattern(
+                new Image(this.getClass().getClassLoader().getResourceAsStream("cell-texture.png")));
+        this.cells = new ArrayList<>();
         createBounds();
         createRandomCells();
     }
@@ -28,19 +32,19 @@ public class Room {
         for (int i = 0; i < width; i++) {
             r = new Rectangle(i * cellPixelSize, 0,
                     cellPixelSize, cellPixelSize);
-            cells.add(r);
+            addCell(r);
             r = new Rectangle(i * cellPixelSize, (height - 1) * cellPixelSize,
                     cellPixelSize, cellPixelSize);
-            cells.add(r);
+            addCell(r);
         }
         // Side bounds
         for (int i = 0; i < height; i++) {
             r = new Rectangle(0,i * cellPixelSize,
                     cellPixelSize, cellPixelSize);
-            cells.add(r);
+            addCell(r);
             r = new Rectangle((width - 1) * cellPixelSize,i * cellPixelSize,
                     cellPixelSize, cellPixelSize);
-            cells.add(r);
+            addCell(r);
         }
     }
 
@@ -50,10 +54,15 @@ public class Room {
                 if (Math.random() < 0.025) {
                     Rectangle r = new Rectangle(i * cellPixelSize, j * cellPixelSize,
                             cellPixelSize, cellPixelSize);
-                    cells.add(r);
+                    addCell(r);
                 }
             }
         }
+    }
+
+    private void addCell(Rectangle r){
+        r.setFill(pattern);
+        cells.add(r);
     }
 
     public int getHeight() {

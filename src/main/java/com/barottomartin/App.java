@@ -2,8 +2,9 @@ package com.barottomartin;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -12,17 +13,24 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Room room = new Room(80, 60 ,10);
+        int width = 80;
+        int height = 60;
+        int cellPixelSize = 10;
+
+        Room room = new Room(width, height ,cellPixelSize);
         Robot robot = new Robot(room);
-        Group group = new Group();
-        Scene scene = new Scene(group, room.getWidth() * room.getCellPixelSize(),
-                room.getHeight() * room.getCellPixelSize());
-
+        Pane pane = new Pane();
+        pane.setBackground(new Background(new BackgroundImage(new Image(
+                this.getClass().getClassLoader().getResourceAsStream("bg-texture.png")),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
+                BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         for (Rectangle r: room.getCells()){
-            group.getChildren().add(r);
+            pane.getChildren().add(r);
         }
-        group.getChildren().add(robot.getShape());
+        pane.getChildren().add(robot.getShape());
 
+        Scene scene = new Scene(pane, room.getWidth() * room.getCellPixelSize(),
+                room.getHeight() * room.getCellPixelSize());
         primaryStage.setScene(scene);
         primaryStage.show();
 
