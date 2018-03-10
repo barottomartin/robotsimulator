@@ -13,11 +13,10 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        int width = 80;
-        int height = 60;
-        int cellPixelSize = 10;
-
-        Room room = new Room(width, height ,cellPixelSize);
+        Properties props = Properties.getInstance();
+        Room room = new Room(Integer.valueOf(props.getProperty("width")),
+                        Integer.valueOf(props.getProperty("height")),
+                        Integer.valueOf(props.getProperty("cellPixelSize")));
         Robot robot = new Robot(room);
         Pane pane = new Pane();
         pane.setBackground(new Background(new BackgroundImage(new Image(
