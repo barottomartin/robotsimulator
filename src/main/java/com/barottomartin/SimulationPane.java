@@ -17,7 +17,7 @@ public class SimulationPane extends HBox {
     private Room room;
     private Robot robot;
     private AnimationTimer timer;
-    public static EventType RESIZE_EVENT = new EventType<>("RESIZE EVENT");
+    public static EventType RELOAD_EVENT = new EventType<>("RESIZE EVENT");
 
 
     public SimulationPane() {
@@ -46,6 +46,7 @@ public class SimulationPane extends HBox {
         this.getChildren().removeAll(this.getChildren());
         createSimulationElements();
         initUI();
+        this.fireEvent(new Event(RELOAD_EVENT));
     }
 
     private void initUI(){
@@ -106,14 +107,6 @@ public class SimulationPane extends HBox {
         grid.setVgap(10);
         grid.setPadding(new Insets(10));
         this.getChildren().add(grid);
-
-        this.applyCss();
-        this.layout();
-        this.setHeight(roomPane.getHeight());
-        this.setWidth(roomPane.getWidth() + grid.getWidth());
-        System.out.println("RP " + roomPane.getWidth() + " " + roomPane.getHeight());
-        System.out.println("SP " + this.getWidth() + " " + this.getHeight());
-        this.fireEvent(new Event(RESIZE_EVENT));
     }
 
     private void addNumericChangeListener(TextField textField, String confField){

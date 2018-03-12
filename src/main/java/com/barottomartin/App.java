@@ -16,9 +16,8 @@ public class App extends Application {
         primaryStage.show();
 
         pane.addEventHandler(EventType.ROOT, event -> {
-            if (event.getEventType() == SimulationPane.RESIZE_EVENT) {
-                primaryStage.setWidth(pane.getWidth());
-                primaryStage.setHeight(pane.getHeight());
+            if (event.getEventType() == SimulationPane.RELOAD_EVENT) {
+                scene.getWindow().sizeToScene();
             }
         });
     }
