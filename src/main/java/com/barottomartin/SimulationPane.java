@@ -2,6 +2,8 @@ package com.barottomartin;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,11 +12,12 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 
-public class SimulationPane extends BorderPane {
+public class SimulationPane extends HBox {
 
     private Room room;
     private Robot robot;
     private AnimationTimer timer;
+    public static EventType RESIZE_EVENT = new EventType<>("RESIZE EVENT");
 
 
     public SimulationPane() {
@@ -55,7 +58,7 @@ public class SimulationPane extends BorderPane {
             roomPane.getChildren().add(r);
         }
         roomPane.getChildren().add(robot.getShape());
-        this.setCenter(roomPane);
+        this.getChildren().add(roomPane);
 
         Button playButton = new Button("Play");
         playButton.setOnAction((ActionEvent e) -> {
@@ -90,19 +93,27 @@ public class SimulationPane extends BorderPane {
         buttonsPane.getChildren().add(pauseButton);
         buttonsPane.getChildren().add(resetButton);
         buttonsPane.setSpacing(10);
-        grid.add(buttonsPane, 0, 0, 4,1);
+        grid.add(buttonsPane, 0, 0, 2,1);
         grid.add(l1,0, 1);
         grid.add(widthText,1, 1);
         grid.add(l2,0, 2);
         grid.add(heightText,1, 2);
-        grid.add(l3,3, 1);
-        grid.add(cellPxText,4, 1);
-        grid.add(l4,3, 2);
-        grid.add(radiusText,4, 2);
+        grid.add(l3,0, 3);
+        grid.add(cellPxText,1, 3);
+        grid.add(l4,0, 4);
+        grid.add(radiusText,1, 4);
         grid.setHgap(2);
         grid.setVgap(10);
         grid.setPadding(new Insets(10));
-        this.setBottom(grid);
+        this.getChildren().add(grid);
+
+        this.applyCss();
+        this.layout();
+        this.setHeight(roomPane.getHeight());
+        this.setWidth(roomPane.getWidth() + grid.getWidth());
+        System.out.println("RP " + roomPane.getWidth() + " " + roomPane.getHeight());
+        System.out.println("SP " + this.getWidth() + " " + this.getHeight());
+        this.fireEvent(new Event(RESIZE_EVENT));
     }
 
     private void addNumericChangeListener(TextField textField, String confField){
