@@ -65,14 +65,6 @@ public class Room {
         cells.add(r);
     }
 
-    public int getHeight() {
-        return height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
     public List<Rectangle> getCells() {
         return cells;
     }

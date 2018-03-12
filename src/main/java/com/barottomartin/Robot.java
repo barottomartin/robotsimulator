@@ -12,8 +12,8 @@ public class Robot {
     private double frontAngle;
     private Room room;
 
-    public Robot(Room room) {
-        shape = new Circle(5);
+    public Robot(Room room, int radius) {
+        shape = new Circle(radius);
         shape.setFill(Color.CHOCOLATE);
         shape.setCenterX(35);
         shape.setCenterY(35);

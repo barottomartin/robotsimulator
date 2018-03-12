@@ -8,6 +8,7 @@ public class Properties extends java.util.Properties {
         setProperty("width", "80");
         setProperty("height", "60");
         setProperty("cellPixelSize", "10");
+        setProperty("robotRadius", "5");
     }
 
     public static Properties getInstance(){
