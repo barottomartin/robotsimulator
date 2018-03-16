@@ -3,12 +3,14 @@ package com.barottomartin;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 
@@ -59,6 +61,7 @@ public class SimulationPane extends HBox {
             roomPane.getChildren().add(r);
         }
         roomPane.getChildren().add(robot.getShape());
+        roomPane.addEventFilter(MouseEvent.MOUSE_CLICKED, this::placeRobot);
         this.getChildren().add(roomPane);
 
         Button playButton = new Button("Play");
@@ -123,5 +126,9 @@ public class SimulationPane extends HBox {
         }));
     }
 
+    private void placeRobot(MouseEvent event) {
+        robot.setX(event.getX());
+        robot.setY(event.getY());
+    }
 
 }
