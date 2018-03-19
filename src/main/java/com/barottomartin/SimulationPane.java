@@ -3,7 +3,6 @@ package com.barottomartin;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -91,6 +90,10 @@ public class SimulationPane extends HBox {
         TextField radiusText = new TextField();
         addNumericChangeListener(radiusText, "robotRadius");
 
+        Label hints = new Label("\nHints: \n" +
+                "Click in the room to place the robot. \n" +
+                "Remember to hit reset after changing \nsimulation parameters to apply them. ");
+
         GridPane grid = new GridPane();
         HBox buttonsPane = new HBox();
         buttonsPane.getChildren().add(playButton);
@@ -106,6 +109,7 @@ public class SimulationPane extends HBox {
         grid.add(cellPxText,1, 3);
         grid.add(l4,0, 4);
         grid.add(radiusText,1, 4);
+        grid.add(hints, 0, 5, 2, 1);
         grid.setHgap(2);
         grid.setVgap(10);
         grid.setPadding(new Insets(10));
