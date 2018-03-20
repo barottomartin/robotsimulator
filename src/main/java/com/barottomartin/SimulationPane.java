@@ -5,17 +5,20 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventType;
 import javafx.geometry.Insets;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class SimulationPane extends HBox {
 
     private Room room;
+    private Canvas pathCanvas;
     private Robot robot;
     private AnimationTimer timer;
     public static EventType RELOAD_EVENT = new EventType<>("RESIZE EVENT");
@@ -29,16 +32,19 @@ public class SimulationPane extends HBox {
 
     private void createSimulationElements(){
         Properties props = Properties.getInstance();
-        this.room = new Room(Integer.valueOf(props.getProperty("width")),
-                Integer.valueOf(props.getProperty("height")),
-                Integer.valueOf(props.getProperty("cellPixelSize")));
+        int width = Integer.valueOf(props.getProperty("width"));
+        int height = Integer.valueOf(props.getProperty("height"));
+        int cellPxSize = Integer.valueOf(props.getProperty("cellPixelSize"));
+        this.room = new Room(width, height, cellPxSize);
+        this.pathCanvas = new Canvas(width * cellPxSize, height * cellPxSize);
         this.robot = new Robot(room, Integer.valueOf(props.getProperty("robotRadius")));
         this.timer = new AnimationTimer(){
             @Override
             public void handle(long now) {
+                double lastX = robot.getX();
+                double lastY = robot.getY();
                 robot.move(now);
-                //Nice line to display history of navigation until that feature is done
-                //group.getChildren().add(robot.rayCast());
+                pathCanvas.getGraphicsContext2D().strokeLine(lastX, lastY, robot.getX(), robot.getY());
             }
         };
     }
@@ -62,15 +68,14 @@ public class SimulationPane extends HBox {
         roomPane.getChildren().add(robot.getShape());
         roomPane.addEventFilter(MouseEvent.MOUSE_CLICKED, this::placeRobot);
         this.getChildren().add(roomPane);
+        pathCanvas.getGraphicsContext2D().setGlobalAlpha(0.5);
+        pathCanvas.getGraphicsContext2D().setStroke(Color.RED);
+        roomPane.getChildren().add(pathCanvas);
 
         Button playButton = new Button("Play");
-        playButton.setOnAction((ActionEvent e) -> {
-            timer.start();
-        });
+        playButton.setOnAction((ActionEvent e) -> timer.start());
         Button pauseButton = new Button("Pause");
-        pauseButton.setOnAction((ActionEvent e) -> {
-            timer.stop();
-        });
+        pauseButton.setOnAction((ActionEvent e) -> timer.stop());
         Button resetButton = new Button("Reset");
         resetButton.setOnAction((ActionEvent e) -> {
             timer.stop();
