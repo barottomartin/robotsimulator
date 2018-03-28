@@ -66,12 +66,13 @@ public class SimulationPane extends HBox {
         for (Rectangle r: room.getCells()){
             roomPane.getChildren().add(r);
         }
-        roomPane.getChildren().add(robot.getShape());
         roomPane.addEventFilter(MouseEvent.MOUSE_CLICKED, this::placeRobot);
         this.getChildren().add(roomPane);
-        pathCanvas.getGraphicsContext2D().setGlobalAlpha(0.5);
-        pathCanvas.getGraphicsContext2D().setStroke(Color.RED);
+        pathCanvas.getGraphicsContext2D().setGlobalAlpha(0.15);
+        pathCanvas.getGraphicsContext2D().setStroke(Color.LIGHTBLUE);
+        pathCanvas.getGraphicsContext2D().setLineWidth(robot.getShape().getRadius() * 2);
         roomPane.getChildren().add(pathCanvas);
+        roomPane.getChildren().add(robot.getShape());
 
         Button playButton = new Button("Play");
         playButton.setOnAction((ActionEvent e) -> timer.start());

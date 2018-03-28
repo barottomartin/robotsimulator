@@ -15,7 +15,7 @@ public class Robot {
 
     public Robot(Room room, int radius) {
         shape = new Circle(radius);
-        shape.setFill(Color.CHOCOLATE);
+        shape.setFill(Color.ORANGERED);
         shape.setCenterX(35);
         shape.setCenterY(35);
         frontAngle = 0;
@@ -43,7 +43,7 @@ public class Robot {
     }
 
     public double getCriticalDistance(){
-        return (room.getCellPixelSize() / 2) + shape.getRadius();
+        return 0.5 * Math.sqrt(2 * Math.pow(room.getCellPixelSize(), 2)) + shape.getRadius();
     }
 
     public void move(long now){
