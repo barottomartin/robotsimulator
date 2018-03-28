@@ -2,9 +2,10 @@ package com.barottomartin;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 public class Robot {
 
@@ -46,7 +47,7 @@ public class Robot {
     }
 
     public void move(long now){
-        if (nearestObstacle() < getCriticalDistance()) {
+        if (nearestObstacleDistance() < getCriticalDistance()) {
             frontAngle = (frontAngle + 90 + Math.random() * 180) % 360;
         } else {
             setX(getX() + Math.sin(Math.toRadians(frontAngle)));
@@ -54,20 +55,18 @@ public class Robot {
         }
     }
 
-    public Line rayCast(){
-        Line line = new Line(getX(), getY(),
-                getX() + getCriticalDistance() * Math.sin(Math.toRadians(frontAngle)),
-                getY() + getCriticalDistance() * Math.cos(Math.toRadians(frontAngle)));
-        return line;
+    public Shape getFrontCollisionLimit(){
+        return new Arc(getX(), getY(), getCriticalDistance(), getCriticalDistance(),
+                (frontAngle + 225) % 360 , 90);
     }
 
-    public double nearestObstacle() {
-        Line line = rayCast();
-        Point2D lineStart = new Point2D(line.getStartX(), line.getStartY());
+    public double nearestObstacleDistance() {
+        Shape collisionLimit = getFrontCollisionLimit();
+        Point2D pointOfReference = new Point2D(getX(), getY());
         double minimumDistance = Double.MAX_VALUE;
         for (Rectangle r: room.getCells()) {
-            if (line.intersects(r.getLayoutBounds())){
-                double distance = lineStart.distance(r.getX() + 0.5 * room.getCellPixelSize(),
+            if (collisionLimit.intersects(r.getLayoutBounds())){
+                double distance = pointOfReference.distance(r.getX() + 0.5 * room.getCellPixelSize(),
                         r.getY() + 0.5 * room.getCellPixelSize());
                 if (distance < minimumDistance){
                     minimumDistance = distance;

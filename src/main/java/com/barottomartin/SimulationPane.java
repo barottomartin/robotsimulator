@@ -18,6 +18,7 @@ import javafx.scene.shape.Rectangle;
 public class SimulationPane extends HBox {
 
     private Room room;
+    private Pane roomPane;
     private Canvas pathCanvas;
     private Robot robot;
     private AnimationTimer timer;
@@ -57,7 +58,7 @@ public class SimulationPane extends HBox {
     }
 
     private void initUI(){
-        Pane roomPane = new Pane();
+        roomPane = new Pane();
         roomPane.setBackground(new Background(new BackgroundImage(new Image(
                 this.getClass().getClassLoader().getResourceAsStream("bg-texture.png")),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
