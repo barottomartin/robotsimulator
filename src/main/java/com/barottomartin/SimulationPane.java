@@ -1,5 +1,8 @@
 package com.barottomartin;
 
+import com.barottomartin.robot.AlwaysLeftNavigationStrategy;
+import com.barottomartin.robot.RandomNavigationStrategy;
+import com.barottomartin.robot.Robot;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -7,6 +10,7 @@ import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -38,7 +42,7 @@ public class SimulationPane extends HBox {
         int cellPxSize = Integer.valueOf(props.getProperty("cellPixelSize"));
         this.room = new Room(width, height, cellPxSize);
         this.pathCanvas = new Canvas(width * cellPxSize, height * cellPxSize);
-        this.robot = new Robot(room, Integer.valueOf(props.getProperty("robotRadius")));
+        this.robot = new Robot(room);
         this.timer = new AnimationTimer(){
             @Override
             public void handle(long now) {
@@ -96,6 +100,11 @@ public class SimulationPane extends HBox {
         Label l4 = new Label("Robot Radius");
         TextField radiusText = new TextField();
         addNumericChangeListener(radiusText, "robotRadius");
+        Label l5 = new Label("Navigation");
+        ComboBox navigationOptions = new ComboBox();
+        navigationOptions.getItems().add(new RandomNavigationStrategy().getNavigationName());
+        navigationOptions.getItems().add(new AlwaysLeftNavigationStrategy().getNavigationName());
+        addOptionChangeListener(navigationOptions, "navigationStrategy");
 
         Label hints = new Label("\nHints: \n" +
                 "Click in the room to place the robot. \n" +
@@ -116,7 +125,9 @@ public class SimulationPane extends HBox {
         grid.add(cellPxText,1, 3);
         grid.add(l4,0, 4);
         grid.add(radiusText,1, 4);
-        grid.add(hints, 0, 5, 2, 1);
+        grid.add(l5,0, 5);
+        grid.add(navigationOptions,1, 5);
+        grid.add(hints, 0, 6, 2, 1);
         grid.setHgap(2);
         grid.setVgap(10);
         grid.setPadding(new Insets(10));
@@ -128,13 +139,24 @@ public class SimulationPane extends HBox {
         textField.textProperty().addListener(((observable, oldValue, newValue) -> {
             if (!newValue.equals("")){
                 try {
-                    Integer.valueOf(newValue);
+                    Integer.valueOf(newValue); // It's ok that the value is never used, just to discard conversion error
                     Properties.getInstance().setProperty(confField, newValue);
                 } catch (NumberFormatException e) {
                     textField.textProperty().setValue(oldValue);
                 }
             }
         }));
+    }
+
+    private void addOptionChangeListener(ComboBox combo, String confField) {
+        combo.getItems().forEach(i -> {
+            if (i.equals(Properties.getInstance().getProperty(confField))){
+                combo.getSelectionModel().select(i);
+            }
+        });
+        combo.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Properties.getInstance().setProperty(confField, newValue.toString());
+        });
     }
 
     private void placeRobot(MouseEvent event) {

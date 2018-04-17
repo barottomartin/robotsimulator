@@ -1,5 +1,7 @@
-package com.barottomartin;
+package com.barottomartin.robot;
 
+import com.barottomartin.Properties;
+import com.barottomartin.Room;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
@@ -12,9 +14,17 @@ public class Robot {
     private Circle shape;
     private double frontAngle;
     private Room room;
+    private NavigationStrategy navigationStrategy;
 
-    public Robot(Room room, int radius) {
-        shape = new Circle(radius);
+    public Robot(Room room) {
+        switch (Properties.getInstance().getProperty("navigationStrategy")) {
+            case "Always Left":
+                navigationStrategy = new AlwaysLeftNavigationStrategy();
+                break;
+            default:
+                navigationStrategy = new RandomNavigationStrategy();
+        }
+        shape = new Circle(Integer.valueOf(Properties.getInstance().getProperty("robotRadius")));
         shape.setFill(Color.ORANGERED);
         shape.setCenterX(35);
         shape.setCenterY(35);
@@ -47,12 +57,11 @@ public class Robot {
     }
 
     public void move(long now){
-        if (nearestObstacleDistance() < getCriticalDistance()) {
-            frontAngle = (frontAngle + 90 + Math.random() * 180) % 360;
-        } else {
-            setX(getX() + Math.sin(Math.toRadians(frontAngle)));
-            setY(getY() + Math.cos(Math.toRadians(frontAngle)));
-        }
+        double[] coordinates = navigationStrategy.move(now, getX(), getY(), frontAngle, nearestObstacleDistance(),
+                getCriticalDistance());
+        setX(coordinates[0]);
+        setY(coordinates[1]);
+        frontAngle = coordinates[2];
     }
 
     public Shape getFrontCollisionLimit(){
