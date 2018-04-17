@@ -1,5 +1,10 @@
 # RobotSimulator
 ## A JavaFX based obstacle avoidance robot simulator
+
+![Alt text](./screenshots/1.jpg "Screenshot 1")
+
+![Alt text](./screenshots/2.jpg "Screenshot 2")
+
 ### What motivated this project?
 I'm afraid there's no highly motivating story behind the project, to reduce it to
 a single word it could be anxiety. I bought a Smart Car Kit from a chinese store
