@@ -1,7 +1,9 @@
 package com.barottomartin;
 
 import com.barottomartin.robot.AlwaysLeftNavigationStrategy;
+import com.barottomartin.robot.PledgeAlgorithmStrategy;
 import com.barottomartin.robot.RandomNavigationStrategy;
+import com.barottomartin.robot.RightHandWallFollowerStrategy;
 import com.barottomartin.robot.Robot;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
@@ -104,6 +106,8 @@ public class SimulationPane extends HBox {
         ComboBox navigationOptions = new ComboBox();
         navigationOptions.getItems().add(new RandomNavigationStrategy().getNavigationName());
         navigationOptions.getItems().add(new AlwaysLeftNavigationStrategy().getNavigationName());
+        navigationOptions.getItems().add(new RightHandWallFollowerStrategy().getNavigationName());
+        navigationOptions.getItems().add(new PledgeAlgorithmStrategy().getNavigationName());
         addOptionChangeListener(navigationOptions, "navigationStrategy");
 
         Label hints = new Label("\nHints: \n" +
