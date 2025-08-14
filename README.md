@@ -37,12 +37,16 @@ later that Oracle was leaving future efforts for JavaFX completely to the commun
 and separating it from the JDK 
 
 ### Requirements
-Project currently needs **Maven** and **Java 8** to be built and packed.
-At the moment there are no dependencies but I guess starting from Java 11 we'll
-need to add JavaFX as a dependency :)
+Project currently needs **Maven** and **Java 21** to be built and packed.
+Starting from Java 11, JavaFX is not part of the JDK anymore, so it has been added as a dependency in the `pom.xml`.
 
 ### Package and run
+To package the application, run:
 ```
 mvn package
+```
+
+To run the application, run the packaged JAR:
+```
 java -jar ./target/robotsimulator-1.0-SNAPSHOT.jar
 ```
