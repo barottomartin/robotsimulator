@@ -21,6 +21,12 @@ public class Robot {
             case "Always Left":
                 navigationStrategy = new AlwaysLeftNavigationStrategy();
                 break;
+            case "Right-Hand Wall Follower":
+                navigationStrategy = new RightHandWallFollowerStrategy();
+                break;
+            case "Pledge Algorithm":
+                navigationStrategy = new PledgeAlgorithmStrategy();
+                break;
             default:
                 navigationStrategy = new RandomNavigationStrategy();
         }
